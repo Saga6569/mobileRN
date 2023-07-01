@@ -1,49 +1,46 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import type { RootState } from '../slices/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { IState, addUsers, choiceUser } from '../slices/tasksSlice';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
-interface IState {
-  id: number;
-  createdAt: Date;
-  name: string;
-  avatar: string;
-  city: string;
-  address: string;
-  phone: string;
-  target?: boolean;
-}
+const ListUsers = ({ navigation }: any) => {
 
-const App = () => {
-  const initState = [] as any;
+  const state = useSelector((state: RootState) => state.state);
+  const dispatch = useDispatch();
 
-  const [state, setState] = useState(initState);
+  // console.log(state.users.filter((el) => el.id === '1'));
 
-  useEffect(() => {
+  if (state.users.length === 0) {
     fetch('https://6499a30479fbe9bcf83fa986.mockapi.io/list')
       .then(res => res.json())
       .then(
         result => {
-          setState(result);
+          dispatch(addUsers(result));
         },
         error => {
           console.log(error);
         },
       );
-  }, []);
+    return null;
+  }
 
-  const renderUser = (el: IState) => {
-
+  const renderUser = (el: IState, i: number) => {
     const imgStyle = { width: 100, height: 100, borderRadius: 50 };
 
     const avatar = (
       <Pressable onPress={(): void => {
-        const newState = state.map((elState: IState) => {
-          elState.target = elState.id === el.id ? true : false;
-          return elState;
-        });
-        setState(newState);
-      }} >
+        navigation.navigate('Details');
+        // dispatch(choiceUser({el}));
+        // console.log(state.users.filter((el) => el.id === '1'));
+        // const newState = state.map((elState: IState) => {
+        //   elState.target = elState.id === el.id ? true : false;
+        //   return elState;
+        // });
+        // setState(newState);
+      }}>
         <Image
           source={{
             uri: el.avatar,
@@ -61,24 +58,18 @@ const App = () => {
     const phone = <Text style={styles.text}>phone: {el.phone}</Text>;
 
     const checkbox = <BouncyCheckbox
-      bounceVelocityIn={1}
+      bounceVelocityIn={10}
       fillColor="green"
       unfillColor="#FFFFFF"
       iconStyle={{ borderColor: 'red' }}
-      innerIconStyle={{ borderWidth: 1 }}
+      innerIconStyle={{ borderWidth: 2 }}
       style={{ position: 'absolute', right: -30, bottom: 0 }}
       onPress={() => {
-        const newState = state.map((elState: IState) => {
-          elState.target = elState.id === el.id;
-          return elState;
-        });
-        setState([...newState]);
+        dispatch(choiceUser(el));
       }}
     />
-
-
     return (
-      <View style={styles.bloc}>
+      <View key={i} style={styles.bloc}>
         <View>
           {avatar}
           {name}
@@ -88,18 +79,13 @@ const App = () => {
           {city}
           {address}
           {phone}
+          {/* <Text>{String(el.target)}</Text> */}
           {checkbox}
         </View>
       </View>
     );
   };
-
-  return (
-    <>
-      <Text style={styles.h1}>Выберите кандидата</Text>
-      <ScrollView>{state.map((el: IState) => renderUser(el))}</ScrollView>
-    </>
-  );
+  return <ScrollView>{state.users.map((el: IState, i: number) => renderUser(el, i))}</ScrollView>;
 };
 
 const styles = StyleSheet.create({
@@ -133,4 +119,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default ListUsers;
