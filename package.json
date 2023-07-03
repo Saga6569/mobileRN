@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^7.3.0",
+    "@react-native-picker/picker": "^2.4.10",
     "@react-navigation/native": "*",
     "@react-navigation/native-stack": "*",
     "@reduxjs/toolkit": "^1.9.5",

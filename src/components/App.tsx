@@ -1,19 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ListUsers from './ListUsers';
+import ListUsersMarked from './ListUsersMarked';
 import { store } from '../slices/store';
 import { Provider } from 'react-redux';
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -22,7 +14,7 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={ListUsers} />
-          <Stack.Screen name="Details" component={HomeScreen} />
+          <Stack.Screen name="Details" component={ListUsersMarked} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

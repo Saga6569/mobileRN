@@ -1,17 +1,20 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Button, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import type { RootState } from '../slices/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { IState, addUsers, choiceUser } from '../slices/tasksSlice';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { Picker } from '@react-native-picker/picker';
 
 const ListUsers = ({ navigation }: any) => {
 
   const state = useSelector((state: RootState) => state.state);
   const dispatch = useDispatch();
 
-  // console.log(state.users.filter((el) => el.id === '1'));
+  const [filter, setFilter] = useState('');
+
+  const [selectedValue, setSelectedValue] = useState("java");
 
   if (state.users.length === 0) {
     fetch('https://6499a30479fbe9bcf83fa986.mockapi.io/list')
@@ -32,7 +35,7 @@ const ListUsers = ({ navigation }: any) => {
 
     const avatar = (
       <Pressable onPress={(): void => {
-        navigation.navigate('Details');
+        // navigation.navigate('Details');
         // dispatch(choiceUser({el}));
         // console.log(state.users.filter((el) => el.id === '1'));
         // const newState = state.map((elState: IState) => {
@@ -51,7 +54,13 @@ const ListUsers = ({ navigation }: any) => {
     );
     const name = <Text style={{ marginTop: 25, fontSize: 13 }}>{el.name}</Text>;
 
-    const strDate = <Text>{el.createdAt.toString()}</Text>;
+    const date1 = new Date(el.createdAt);
+
+    const year = String(date1.getFullYear()).length === 1 ? `0${date1.getFullYear()}` : String(date1.getFullYear());
+    const month = String(date1.getMonth()).length === 1 ? `0${date1.getMonth()}` : String(date1.getMonth());
+    const day = String(date1.getDate()).length === 1 ? `0${date1.getDate()}` : String(date1.getDate());
+
+    const strDate = <Text>{`${year}-${month}-${day}`}</Text>;
     const date = <Text style={styles.text}>date: {strDate}</Text>;
     const city = <Text style={styles.text}>city: {el.city}</Text>;
     const address = <Text style={styles.text}>address: {el.address}</Text>;
@@ -63,12 +72,12 @@ const ListUsers = ({ navigation }: any) => {
       unfillColor="#FFFFFF"
       iconStyle={{ borderColor: 'red' }}
       innerIconStyle={{ borderWidth: 2 }}
-      style={{ position: 'absolute', right: -30, bottom: 0 }}
+      style={{ position: 'absolute', right: -10, bottom: 5 }}
       onPress={() => {
         dispatch(choiceUser(el));
       }}
     />
-    return (
+    return (<>
       <View key={i} style={styles.bloc}>
         <View>
           {avatar}
@@ -79,13 +88,38 @@ const ListUsers = ({ navigation }: any) => {
           {city}
           {address}
           {phone}
-          {/* <Text>{String(el.target)}</Text> */}
-          {checkbox}
         </View>
+        {checkbox}
       </View>
+    </>
     );
   };
-  return <ScrollView>{state.users.map((el: IState, i: number) => renderUser(el, i))}</ScrollView>;
+
+  const keyPicker = Object.keys(state.users[0]);
+
+  return (<View>
+    <View style={{ display: 'flex', flexDirection: 'row', alignItems: "center", }} >
+      <TextInput
+        style={styles.input}
+        onChangeText={setFilter}
+        value={filter}
+      />
+      <View style={styles.Picker} >
+        <Picker
+          style={{ width: 150, position: 'relative', top: -7}}
+          selectedValue={selectedValue}
+          onValueChange={(itemValue) => setSelectedValue(itemValue)}
+        >
+          {keyPicker.map((key: string) => <Picker.Item label={key} value={key} style={{ fontSize: 12 }} />)}
+        </Picker>
+      </View>
+    </View>
+    <Button
+      title="Посмотреть Избранные"
+      onPress={() => navigation.navigate('Details')}
+    />
+    <ScrollView>{state.users.map((el: IState, i: number) => renderUser(el, i))}</ScrollView>
+  </View>);
 };
 
 const styles = StyleSheet.create({
@@ -116,6 +150,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     bottom: 0,
+  },
+  input: {
+    height: 35,
+    width: 200,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  Picker: {
+    width: 'auto',
+    height: 35,
+    alignItems: 'center',
+    borderWidth: 1,
+    marginRight: 25,
   },
 });
 
