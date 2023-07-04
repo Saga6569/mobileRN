@@ -3,13 +3,14 @@ import {createSlice} from '@reduxjs/toolkit';
 
 export interface IState {
   id: string;
-  createdAt: Date;
+  date: Date;
   name: string;
   avatar: string;
   city: string;
   address: string;
   phone: string;
   target?: boolean;
+  [key: string]: string;
 }
 
 const initialState: {users: IState[]} = {

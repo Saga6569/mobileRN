@@ -20,21 +20,7 @@ const ListUsersMarked = ({ navigation }: any) => {
                 title="вернуться к листу с пользователями"
                 onPress={() => navigation.navigate('Home')}
             />
-        </View>)
-    }
-
-    if (state.users.length === 0) {
-        fetch('https://6499a30479fbe9bcf83fa986.mockapi.io/list')
-            .then(res => res.json())
-            .then(
-                result => {
-                    dispatch(addUsers(result));
-                },
-                error => {
-                    console.log(error);
-                },
-            );
-        return null;
+        </View>);
     }
 
     const renderUser = (el: IState, i: number) => {
@@ -63,7 +49,7 @@ const ListUsersMarked = ({ navigation }: any) => {
         const name = <Text style={{ marginTop: 25, fontSize: 13 }}>{el.name}</Text>;
 
 
-        const date1 = new Date(el.createdAt);
+        const date1 = new Date(el.date);
 
         const year = String(date1.getFullYear()).length === 1 ? `0${date1.getFullYear()}` : String(date1.getFullYear());
         const month = String(date1.getMonth()).length === 1 ? `0${date1.getMonth()}` : String(date1.getMonth());
@@ -108,7 +94,7 @@ const ListUsersMarked = ({ navigation }: any) => {
 
     return (<View>
         <ScrollView>{usersMarker.map((el: IState, i: number) => renderUser(el, i))}</ScrollView>
-    </View>)
+    </View>);
 };
 
 const styles = StyleSheet.create({
