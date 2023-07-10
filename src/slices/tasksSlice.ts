@@ -10,7 +10,8 @@ export interface IState {
   address: string;
   phone: string;
   target?: boolean;
-  [key: string]: string;
+  description?: string;
+  [key: string]: string | undefined | Date | boolean;
 }
 
 const initialState: {users: IState[]} = {
@@ -35,9 +36,17 @@ export const stateSlice = createSlice({
         return elUser;
       });
     },
+    setDescription: (state, {payload: {value, key, id}}) => {
+      state.users.map((elUser: IState) => {
+        if (id === elUser.id) {
+          elUser[key] = value;
+        }
+        return elUser;
+      });
+    },
   },
 });
 
-export const {addUsers, choiceUser} = stateSlice.actions;
+export const {addUsers, choiceUser, setDescription} = stateSlice.actions;
 
 export default stateSlice.reducer;

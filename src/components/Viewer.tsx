@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { Button, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Button, Image, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { RootState } from '../slices/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { IState } from '../slices/tasksSlice';
+import { IState, setDescription } from '../slices/tasksSlice';
+
+
 
 const Viewer = ({ navigation }: any) => {
 
@@ -14,7 +16,13 @@ const Viewer = ({ navigation }: any) => {
 
   const el: IState = state.users[count];
 
-  const imgStyle = { width: 250, height: 250};
+  const [infoUser, setInfoUser] = useState(el);
+
+  // const st = (key, value, object) => {
+
+  // };
+
+  const imgStyle = { width: 250, height: 250 };
 
   const avatar = (
     <Pressable onPress={(): void => {
@@ -50,9 +58,43 @@ const Viewer = ({ navigation }: any) => {
   const address = <Text style={styles.text}>address: {el.address}</Text>;
   const phone = <Text style={styles.text}>phone: {el.phone}</Text>;
 
-  const description = <Text style={styles.text}>description: {el.description ?? ''}</Text>;
+  const i = <TextInput
+    style={{
+      height: 30,
+      margin: 12,
+      borderWidth: 1,
+      padding: 5,
+    }}
+    onChangeText={(e) => {
+      const news: string = infoUser.description = e;
+      setInfoUser({ ...infoUser, description: news });
+    }}
+    value={infoUser.description}
+  />;
 
-  console.log(el)
+  const description = <Text style={styles.text}>description:</Text>;
+
+  // const keys = Object.keys(el);
+
+  // const inp = keys.map((key, i: number) => {
+  //   return (
+  //     <TextInput
+  //       key={i}
+  //       style={{
+  //         height: 35,
+  //         width: 200,
+  //         margin: 12,
+  //         borderWidth: 1,
+  //         padding: 10,
+  //       }}
+  //       onChangeText={(e) => {
+  //         infoUser[key] + e;
+
+  //         setInfoUser({ ...infoUser });
+  //       }}
+  //     // value={infoUser.key}
+  //     />);
+  // });
 
   return (<View  >
     <View style={{ display: 'flex', marginLeft: 'auto', marginRight: 'auto', padding: 10 }}>
@@ -64,8 +106,32 @@ const Viewer = ({ navigation }: any) => {
       {city}
       {address}
       {phone}
-      {description}
+      <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', }} >
+        {description}
+        {i}
+        <Button
+          onPress={async () => {
+            let response = await fetch('https://6499a30479fbe9bcf83fa986.mockapi.io/list/1', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+              },
+              body: JSON.stringify({ description: infoUser.description }),
+            });
+           const status = response.status;
+            if (status === 200) {
+              dispatch(setDescription({ value: infoUser.description, key: 'description', id: '1' }));
+              alert('данные успешно обновлены');
+              return;
+            }
+            alert(response.status);
+          }}
+          title="save"
+          color="#841584"
+        />
+      </View>
     </View>
+    {/* <SafeAreaView>{inp}</SafeAreaView> */}
   </View>
   );
 };
@@ -74,7 +140,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     marginLeft: 0,
-    marginTop: 5,
+    // marginTop: 5,
   },
   add: {
     width: 50,
