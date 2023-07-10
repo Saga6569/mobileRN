@@ -111,7 +111,7 @@ const ListUsers = ({ navigation }: any) => {
       />
       <View style={styles.Picker} >
         <Picker
-          style={{ width: 150, position: 'relative', top: -7 }}
+          style={{ width: 150, position: 'relative', top: -7, color: '#000000', }}
           selectedValue={selectedValue}
           onValueChange={(itemValue) => setSelectedValue(itemValue)}
         >
@@ -130,7 +130,7 @@ const ListUsers = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   h1: {
     backgroundColor: '#7FFFD4',
-    color: '#000',
+    color: '#000000',
     fontSize: 25,
     fontWeight: '700',
     padding: 20,
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 0,
     marginTop: 5,
+    color: '#000000',
   },
   add: {
     width: 50,
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   input: {
+    color: '#000000',
     height: 35,
     width: 200,
     margin: 12,

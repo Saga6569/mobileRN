@@ -44,7 +44,7 @@ const Viewer = ({ navigation }: any) => {
     </Pressable>
   );
 
-  const name = <Text style={{ marginTop: 25, fontSize: 25 }}>{el.name}</Text>;
+  const name = <Text style={{ marginTop: 25, fontSize: 25, color: '#000000' }}>{el.name}</Text>;
 
   const date1 = new Date(el.date);
 
@@ -64,6 +64,7 @@ const Viewer = ({ navigation }: any) => {
       margin: 12,
       borderWidth: 1,
       padding: 5,
+      color: '#000000',
     }}
     onChangeText={(e) => {
       const news: string = infoUser.description = e;
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     marginLeft: 0,
-    // marginTop: 5,
+    color: '#000000',
   },
   add: {
     width: 50,

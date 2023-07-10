@@ -14,7 +14,7 @@ const ListUsersMarked = ({ navigation }: any) => {
     const markedUser = state.users.filter((el) => el.target);
 
     if (markedUser.length === 0) {
-        return (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        return (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', color: '#000000', }}>
             <Text>Вы не добавили ни одного  пользователя в избраные</Text>
             <Button
                 title="вернуться к листу с пользователями"
@@ -46,7 +46,7 @@ const ListUsersMarked = ({ navigation }: any) => {
                 />
             </Pressable>
         );
-        const name = <Text style={{ marginTop: 25, fontSize: 13 }}>{el.name}</Text>;
+        const name = <Text style={{ marginTop: 25, fontSize: 13, color: '#000000', }}>{el.name}</Text>;
 
 
         const date1 = new Date(el.date);
@@ -100,7 +100,7 @@ const ListUsersMarked = ({ navigation }: any) => {
 const styles = StyleSheet.create({
     h1: {
         backgroundColor: '#7FFFD4',
-        color: '#000',
+        color: '#000000',
         fontSize: 25,
         fontWeight: '700',
         padding: 20,
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
         borderWidth: 5,
     },
     text: {
+        color: '#000000',
         fontSize: 15,
         marginLeft: 0,
         marginTop: 5,
