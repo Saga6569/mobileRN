@@ -83,7 +83,7 @@ const ListUsers = ({ navigation }: any) => {
           {avatar}
           {name}
         </View>
-        <View style={{ marginLeft: 5 }} >
+        <View style={{ marginLeft: 25 }} >
           {date}
           {city}
           {address}

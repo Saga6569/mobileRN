@@ -11,7 +11,7 @@ export interface IState {
   phone: string;
   target?: boolean;
   description?: string;
-  [key: string]: string | undefined | Date | boolean;
+  [key: string]: any;
 }
 
 const initialState: {users: IState[]} = {
